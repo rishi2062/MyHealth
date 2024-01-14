@@ -1,6 +1,5 @@
 package com.example.myhealth
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -31,8 +30,12 @@ import androidx.navigation.NavController
 fun WelcomeUI(navController: NavController){
 Box(
 modifier = Modifier
-.fillMaxSize()
-.background(Color.Gray)
+    .fillMaxSize()
+    .paint(
+        painterResource(id = R.drawable.offlinebackground),
+        contentScale = ContentScale.FillBounds,
+        alpha = .6f
+    )
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -66,14 +69,23 @@ modifier = Modifier
             onClick = { navController.navigate("GetMyInfo") },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(Color(0x6AFFFFFF))
+
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = "Get Started", modifier = Modifier.padding(end = 8.dp))
-                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null)
+                Text(
+                    text = "Get Started", modifier = Modifier.padding(end = 8.dp),
+                    color = Color.White
+                )
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    contentDescription = null,
+                    tint = Color.White
+                )
             }
         }
     }

@@ -1,11 +1,8 @@
 package com.example.myhealth
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,48 +12,35 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.NearMe
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.myhealth.ViewModel.MainViewModel.MainViewModel
-import com.example.myhealth.model.Person
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 
 @Composable
 fun GiveInfo(navController : NavController,viewModel: MainViewModel){
@@ -112,8 +96,26 @@ fun GetName(navController: NavController,viewModel: MainViewModel){
                         value = name,
                         onValueChange = {
                             name = it
+                            errorCheck = checkText(name)
                         },
                         isError = errorCheck,
+                        supportingText = {
+                            if (errorCheck) {
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = "Name cannot be empty",
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        },
+                        trailingIcon = {
+                            if (errorCheck)
+                                Icon(
+                                    Icons.Filled.Error,
+                                    "error",
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                        },
                         label = { Text(text = "Your Name") },
                         placeholder = { Text(text = "First Name") },
                         colors = TextFieldDefaults.colors(
@@ -122,7 +124,7 @@ fun GetName(navController: NavController,viewModel: MainViewModel){
                             cursorColor = Color.White,
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color(0x3BFFFFFF),
-                            errorContainerColor = Color.Red,
+                            errorTextColor = Color.Red,
                             errorCursorColor = Color.Red
                         ),
                         modifier = Modifier.fillMaxWidth()
@@ -166,6 +168,7 @@ fun GetAge(navController: NavController,viewModel: MainViewModel){
     var age by remember{
         viewModel.age
     }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
